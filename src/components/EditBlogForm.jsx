@@ -9,6 +9,7 @@ function EditBlogForm() {
     const [userId, setUserId] = useState('')
     const [apiResponse, setApiResponse] = useState('')
 
+
     const getBlogById = async () => {
         const id = params.id
         const response = await fetch(`http://localhost:5000/blog/${id}`)
@@ -19,7 +20,7 @@ function EditBlogForm() {
         setUserId(data.userId)
     }
 
-    !title && !content && getBlogById()
+    (!title && !content && !userId) && getBlogById()
 
     const editBlog = async() =>{
         const id = params.id
@@ -37,7 +38,7 @@ function EditBlogForm() {
         })
 
         const data = await response.json()
-        setApiResponse(data)
+        setApiResponse(data.message)
 
     }
 
