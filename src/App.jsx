@@ -4,6 +4,9 @@ import Header from './components/Header'
 import AddBlogForm from './components/AddBlogForm'
 import ListBlog from './components/ListBlog'
 import EditBlogForm from './components/EditBlogForm'
+import Login from './components/Login'
+import ProtectedRoute from './routes/ProtectedRoute'
+import UnProtectedRoute from './routes/UnProtectedRoute'
 
 function App() {
 
@@ -12,12 +15,19 @@ function App() {
 
       <BrowserRouter>
         <Header />
-        
+
         <Routes>
           <Route path="/" element={<ListBlog />} />
-          <Route path="/myblog" element={<h1>My blog</h1>} />
-          <Route path="/addblog" element={<AddBlogForm />} />
-          <Route path="/editblog/:id" element={<EditBlogForm />} />
+
+          <Route path="/" element={<ProtectedRoute />}>
+            <Route path="myblog" element={<h1>My blog</h1>} />
+            <Route path="addblog" element={<AddBlogForm />} />
+            <Route path="editblog/:id" element={<EditBlogForm />} />
+          </Route>
+
+          <Route path="/auth/" element={<UnProtectedRoute />}>
+            <Route path="login" element={<Login />} />
+          </Route>
         </Routes>
       </BrowserRouter>
 

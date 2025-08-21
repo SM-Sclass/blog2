@@ -1,33 +1,21 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import {useReadOnlyBlogData} from '../context/blogdata-context'
 
 function EditBlogForm() {
-    const params = useParams()
-    const [title, setTitle] = useState('')
-    const [content, setContent] = useState('')
-    const [image_url, setImage_Url] = useState('')
-    const [userId, setUserId] = useState('')
+    const contextValue = useReadOnlyBlogData()
+    const [title, setTitle] = useState(contextValue.title)
+    const [content, setContent] = useState(contextValue.content)
+    const [image_url, setImage_Url] = useState(contextValue.image_url)
+    const [userId, setUserId] = useState(contextValue.userId)
     const [apiResponse, setApiResponse] = useState('')
 
 
-    const getBlogById = async () => {
-        const id = params.id
-        const response = await fetch(`http://localhost:5000/blog/${id}`)
-        const data = await response.json()
-        setTitle(data.title)
-        setContent(data.content)
-        setImage_Url(data.image_url)
-        setUserId(data.userId)
-    }
-
-    (!title && !content && !userId) && getBlogById()
-
     const editBlog = async() =>{
-        const id = params.id
-        const response = await fetch(`http://localhost:5000/blog/${id}`,{
+        const response = await fetch(`http://localhost:5000/blog/${contextValue.blogData._id}`,{
             method:'PUT',
             headers:{
                 'Content-Type':'application/json',
+                Authorization: localStorage.getItem('access_token')
             },
             body:JSON.stringify({
                 title,
